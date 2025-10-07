@@ -16,7 +16,14 @@ export default async function HomePage() {
             >
               {post.frontmatter.title}
             </a>
-            <p className="text-gray-500 text-sm">{post.frontmatter.date}</p>
+            <p className="text-gray-500 text-sm">
+              {
+              new Date(post.frontmatter.date).toLocaleDateString('en-US', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+              })}
+              </p>
           </li>
         ))}
       </ul>
