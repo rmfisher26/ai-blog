@@ -8,16 +8,13 @@ import html from "remark-html";
 const postsDirectory = path.join(process.cwd(), "content");
 
 export function getPostSlugs() {
-  console.log("getPostSlugs:" + postsDirectory)
   return fs.readdirSync(postsDirectory);
 }
 
 export async function getPostBySlug(slug: string) {
   const realSlug = slug.replace(/\.md$/, "");
-  console.log(realSlug)
 
   const fullPath = path.join(postsDirectory, `${realSlug}.md`);
-  console.log(fullPath)
 
   const fileContents = fs.readFileSync(fullPath, "utf8");
 

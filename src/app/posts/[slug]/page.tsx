@@ -5,8 +5,12 @@ export async function generateStaticParams() {
   return slugs.map((slug) => ({ slug: slug.replace(/\.md$/, "") }));
 }
 
-export default async function PostPage({ params }: { params: { slug: string } }) {
-  const post = await getPostBySlug(params.slug);
+export default async function PostPage({ params }: 
+  { params: Promise<{ slug: string }> }) {
+    
+  const routeParams = await params;
+
+  const post = await getPostBySlug(routeParams.slug);
 
   return (
     <article className="prose mx-auto p-6">
