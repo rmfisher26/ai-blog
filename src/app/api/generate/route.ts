@@ -1,6 +1,16 @@
 import { NextResponse } from "next/server";
-import fs from "fs";
-import path from "path";
+import { prisma } from "@/lib/prisma";
+import matter from "gray-matter";
+
+function parseMarkdown(raw: string) {
+  // remove ```markdown and ending ``` if present
+  const cleaned = raw
+    .replace(/^```markdown\s*/, '')
+    .replace(/```$/, '')
+    .trim()
+
+  return matter(cleaned)
+}
 
 export async function POST(req: Request) {
   const { topic } = await req.json();
@@ -30,17 +40,26 @@ export async function POST(req: Request) {
     }),
   });
 
-  const data = await aiResponse.json();
-  const markdown = data.choices?.[0]?.message?.content;
+  const aiData = await aiResponse.json();
+  const rawContents = aiData.choices?.[0]?.message?.content;
+  
+  if (!rawContents) return NextResponse.json({ error: "No content" }, { status: 500 });
+  
+  const parsedMarkdown = parseMarkdown(rawContents)
+  const { data, content } = matter(parsedMarkdown);
 
-  if (!markdown) {
-    return NextResponse.json({ error: "No content generated" }, { status: 500 });
-  }
-
-  // 🔹 Save markdown file
   const slug = topic.toLowerCase().replace(/[^a-z0-9]+/g, "-");
-  const filePath = path.join(process.cwd(), "content", `${slug}.md`);
-  fs.writeFileSync(filePath, markdown, "utf8");
+  const tags = Array.isArray(data.tags) ? data.tags.join(',') : '' // ✅ store as string
 
-  return NextResponse.json({ message: "Post created", slug });
+  const post = await prisma.post.create({
+    data: { 
+      title: data.title, 
+      slug, 
+      content:content.trim(), //no markdown fences
+      tags: tags },
+  });
+
+  return NextResponse.json({ message: "Post created", post });
 }
+
+
