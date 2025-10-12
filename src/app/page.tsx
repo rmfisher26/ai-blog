@@ -1,4 +1,5 @@
 
+import AuthButton from "@/components/AuthButton";
 import Search from "@/components/Search";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
@@ -10,6 +11,7 @@ export default async function HomePage() {
   });
   return (
    <main className="max-w-2xl mx-auto p-6">
+      <AuthButton/>
       <h1 className="text-3xl font-bold mb-6">🧠 AI Blog</h1>
       {<Search posts={posts}/>}
       <br></br>
