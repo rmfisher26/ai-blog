@@ -7,6 +7,25 @@ interface PostPageProps {
   params: Promise<{ slug: string }> // 👈 note: params is now async
 }
 
+export async function generateMetadata({ params }: { params: { slug: string } }) {
+  const post = await prisma.post.findUnique({
+    where: { slug: params.slug },
+    select: { title: true, content: true },
+  });
+
+  if (!post) {
+    return {
+      title: "Post not found | AI Blog",
+      description: "This post could not be found.",
+    };
+  }
+
+  return {
+    title: `${post.title} | AI Blog`,
+    description: post.content.slice(0, 160), // use first 160 chars
+  };
+}
+
 export default async function PostPage({ params }: PostPageProps) {
   const { slug } = await params
 
