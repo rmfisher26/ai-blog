@@ -5,6 +5,7 @@ export default function WritePage() {
   const [topic, setTopic] = useState("");
   const [loading, setLoading] = useState(false);
   const [result, setResult] = useState("");
+  const [image, setImage] = useState("");
 
   const handleGenerate = async () => {
     setLoading(true);
@@ -20,6 +21,17 @@ export default function WritePage() {
     else setResult(`✅ Post saved! View it at /posts/${data.slug}`);
   };
 
+  /*
+  const handleImage = async () => {
+    const res = await fetch("/api/image", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ prompt: `Blog post about ${topic}` }),
+    });
+    const data = await res.json();
+    setImage(data.imageUrl);
+  };
+*/
   return (
     <main className="max-w-xl mx-auto p-6">
       <h1 className="text-2xl font-bold mb-4">🧠 AI Blog Writer</h1>

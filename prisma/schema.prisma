@@ -12,7 +12,10 @@ model Post {
   title     String
   slug      String   @unique
   content   String
+  author         String?
   tags      String?  // ✅ single string column
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  coverImageUrl  String?   // optional URL for cover image
+  coverImageAlt  String?   // optional alt text
 }
