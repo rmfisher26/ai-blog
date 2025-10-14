@@ -1,7 +1,12 @@
 "use client";
 import { useState } from "react";
+import { Post } from "@prisma/client";
 
-export default function Search({ posts }: { posts: any[] }) {
+type SearchProps = {
+  posts: Pick<Post, "id" | "title" | "slug">[]; // or just Post[] if you have all fields
+};
+
+export default function Search({ posts }: SearchProps) {
   const [query, setQuery] = useState("");
   const filtered = posts.filter((p) =>
     p.title.toLowerCase().includes(query.toLowerCase())
