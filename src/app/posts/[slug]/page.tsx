@@ -36,7 +36,7 @@ export default async function PostPage({ params }: PostPageProps) {
 
   if (!post) return <div>Post not found</div>;
 
-  console.log(post)
+  //console.log(post)
 
 
   return (

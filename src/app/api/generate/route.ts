@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import matter from "gray-matter";
 import OpenAI from "openai";
+import { revalidatePath } from "next/cache";
 
 const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY!,
@@ -97,9 +98,14 @@ export async function POST(req: Request) {
       coverImageAlt: data.coverImageAlt || data.title,
     },
   });
-  console.log(post)
 
-  return NextResponse.json({ message: "Post created", post });
+  //console.log(post)
+
+  //✅ Force Next.js to revalidate the home and posts list page
+  revalidatePath("/");            // Home or blog index
+  revalidatePath(`/posts/${slug}`); // The new post page
+
+  return NextResponse.json({ message: "Post created and revalidated cache", post });
 }
 
 
