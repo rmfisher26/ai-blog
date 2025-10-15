@@ -10,8 +10,9 @@ import {
   CardContent,
   CardActions,
   CardMedia,
-  Grid,
+  Grid
 } from "@mui/material";
+
 import placeholder from '@/images/placeholder.png'
 
 export default async function HomePage() {
@@ -36,7 +37,7 @@ export default async function HomePage() {
       {/* Blog Post Cards */}
       <Grid container spacing={3}>
         {posts.map((post) => (
-          <Grid item xs={12} sm={6} md={4} key={post.id}>
+          <Grid key={post.id}>
             <Card
               sx={{
                 height: "100%",
