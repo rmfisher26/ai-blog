@@ -1,51 +1,105 @@
-
 import AuthButton from "@/components/AuthButton";
 import Search from "@/components/Search";
 import { prisma } from "@/lib/prisma";
 import Link from "next/link";
-import { Typography, Button, Box } from '@mui/material';
-
+import {
+  Typography,
+  Button,
+  Box,
+  Card,
+  CardContent,
+  CardActions,
+  CardMedia,
+  Grid,
+} from "@mui/material";
+import placeholder from '@/images/placeholder.png'
 
 export default async function HomePage() {
   const posts = await prisma.post.findMany({
     orderBy: { createdAt: "desc" },
   });
+
   return (
-
-    
-    <main className="max-w-2xl mx-auto p-6">
-
-      
+    <main className="max-w-5xl mx-auto p-6">
       <AuthButton />
-      <h1 className="text-3xl font-bold mb-6">🧠 AI Blog</h1>
-      {<Search posts={posts} />}
-      <br></br>
 
-      <p>All Blogs</p>
-      <br></br>
-      <ul className="space-y-4">
+      <Typography variant="h3" fontWeight="bold" gutterBottom>
+        AI Blog
+      </Typography>
+
+      <Search posts={posts} />
+
+      <Typography variant="h5" sx={{ mt: 4, mb: 2 }}>
+        All Blogs
+      </Typography>
+
+      {/* Blog Post Cards */}
+      <Grid container spacing={3}>
         {posts.map((post) => (
-          <li key={post.id}>
-            <Link href={`/posts/${post.slug}`} className="text-blue-600 hover:underline">
-              {post.title}
-            </Link>
-            <p className="text-gray-500 text-sm">
-              {new Date(post.createdAt).toLocaleDateString()}
-            </p>
-          </li>
+          <Grid item xs={12} sm={6} md={4} key={post.id}>
+            <Card
+              sx={{
+                height: "100%",
+                display: "flex",
+                flexDirection: "column",
+                justifyContent: "space-between",
+                boxShadow: 3,
+                transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                "&:hover": {
+                  transform: "translateY(-4px)",
+                  boxShadow: 6,
+                },
+              }}
+            >
+              {/* Card Image */}
+
+              <CardMedia
+                component="img"
+                image={placeholder.src}
+                alt={post.title}
+              />
+
+              <CardContent>
+                <Typography
+                  variant="h6"
+                  component={Link}
+                  href={`/posts/${post.slug}`}
+                  sx={{
+                    textDecoration: "none",
+                    color: "primary.main",
+                    "&:hover": { textDecoration: "underline" },
+                  }}
+                >
+                  {post.title}
+                </Typography>
+                <Typography variant="body2" color="text.secondary" sx={{ mt: 1 }}>
+                  {new Date(post.createdAt).toLocaleDateString()}
+                </Typography>
+              </CardContent>
+              <CardActions>
+                <Button
+                  size="small"
+                  component={Link}
+                  href={`/posts/${post.slug}`}
+                  variant="outlined"
+                >
+                  Read More
+                </Button>
+              </CardActions>
+            </Card>
+          </Grid>
         ))}
-      </ul>
-      <p>Number of Blogs:{posts.length}</p>
-      <Box sx={{ textAlign: 'center', mt: 4 }}>
-        <Typography variant="h4" gutterBottom>
-          Welcome to Your Prisma + MUI + Vercel App 🚀
-        </Typography>
+      </Grid>
+
+      <Typography variant="body1" sx={{ mt: 3 }}>
+        Number of Blogs: {posts.length}
+      </Typography>
+
+      <Box sx={{ textAlign: "center", mt: 6 }}>
         <Typography variant="body1" gutterBottom>
           This app is styled with Material UI and deployed on Vercel.
         </Typography>
-        <Button variant="contained" color="secondary" sx={{ mt: 2 }}>
-          Explore Posts
-        </Button>
+  
       </Box>
     </main>
   );

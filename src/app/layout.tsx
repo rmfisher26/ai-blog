@@ -4,17 +4,10 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { SessionProvider } from 'next-auth/react'
 import { Analytics } from "@vercel/analytics/react";
-
-
 import * as React from 'react';
-import { ThemeProvider } from '@mui/material/styles';
-import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
-import { theme } from '@/lib/theme';
 import Navbar from '@/components/NavBar';
 import ThemeRegistry from '@/components/ThemeRegistry';
-
-
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -25,7 +18,6 @@ const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
 });
-
 
 
 export default function RootLayout({
@@ -44,8 +36,6 @@ export default function RootLayout({
             <Analytics />
           </Container>
         </ThemeRegistry>
-
-
       </body>
     </html>
   );
