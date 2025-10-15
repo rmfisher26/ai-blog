@@ -8,6 +8,7 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
+import ThemeToggleButton from './ThemeToggleButton';
 
 export default function Navbar() {
   return (
@@ -20,6 +21,9 @@ export default function Navbar() {
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Prisma + Next.js App
           </Typography>
+             <Box>
+          <ThemeToggleButton />
+        </Box>
         </Toolbar>
       </AppBar>
     </Box>

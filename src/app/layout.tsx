@@ -12,6 +12,7 @@ import CssBaseline from '@mui/material/CssBaseline';
 import Container from '@mui/material/Container';
 import { theme } from '@/lib/theme';
 import Navbar from '@/components/NavBar';
+import ThemeRegistry from '@/components/ThemeRegistry';
 
 
 
@@ -36,14 +37,13 @@ export default function RootLayout({
     <html lang="en">
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      > <ThemeProvider theme={theme}>
-          <CssBaseline />
+      > <ThemeRegistry>
           <Navbar />
           <Container maxWidth="md" sx={{ mt: 4 }}>
             <SessionProvider>{children}</SessionProvider>
             <Analytics />
           </Container>
-        </ThemeProvider>
+        </ThemeRegistry>
 
 
       </body>
