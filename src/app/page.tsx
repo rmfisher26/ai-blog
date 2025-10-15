@@ -30,6 +30,7 @@ export default async function HomePage() {
           </li>
         ))}
       </ul>
+       <p>Number of Blogs:{posts.length}</p>
     </main>
   );
 }
