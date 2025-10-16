@@ -1,7 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import ReactMarkdown from "react-markdown";
 import Image from 'next/image'
-import placeholder from '@/images/placeholder.png'
 
 interface PostPageProps {
   params: Promise<{ slug: string }> // 👈 note: params is now async
@@ -46,7 +45,7 @@ export default async function PostPage({ params }: PostPageProps) {
         {new Date(post.createdAt).toLocaleDateString()}
       </p>
        <Image
-      src={placeholder}
+      src={"/images/placeholder.png"}
       width={512}
       height={512}
       alt={(post.coverImageAlt) || ""}

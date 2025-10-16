@@ -9,6 +9,7 @@ import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 import HomeIcon from '@mui/icons-material/Home';
 import ThemeToggleButton from './ThemeToggleButton';
+import Image from 'next/image'
 
 export default function Navbar() {
   return (
@@ -16,10 +17,16 @@ export default function Navbar() {
       <AppBar position="static" color="primary">
         <Toolbar>
           <IconButton edge="start" color="inherit" href="/" sx={{ mr: 2 }}>
-            <HomeIcon />
+            
+             <Image
+                  src={"/images/logo.png"}
+                  width={50}
+                  height={50}
+                  alt={""}
+                />
           </IconButton>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-            Prisma + Next.js App
+            The Doppelgamers
           </Typography>
              <Box>
           <ThemeToggleButton />

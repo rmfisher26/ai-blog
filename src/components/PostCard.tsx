@@ -42,7 +42,7 @@ export default function PostCard({ post }: PostCardProps) {
         <CardMedia
           component="img"
           height="180"
-          image={placeholder.src /*post.coverImageUrl*/}
+          image={"/images/placeholder.png"}
           alt={post.title}
         />
       )}
