@@ -82,7 +82,6 @@ export async function POST(req: Request) {
       imageUrl = image.data?.[0]?.url ?? null;
     } catch (err) {
       console.error("Image generation failed:", err);
-      imageUrl = "/placeholder.jpg"
     }
   }
 
