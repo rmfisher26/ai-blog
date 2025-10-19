@@ -10,6 +10,13 @@ import UnfoldMoreRoundedIcon from '@mui/icons-material/UnfoldMoreRounded';
 import { gray, brand } from '../themePrimitives';
 
 /* eslint-disable import/prefer-default-export */
+
+// ✅ Named forwardRef component for select icon
+const UnfoldMoreIcon = React.forwardRef<SVGSVGElement, SvgIconProps>(
+  (props, ref) => <UnfoldMoreRoundedIcon fontSize="small" {...props} ref={ref} />
+);
+UnfoldMoreIcon.displayName = "UnfoldMoreIcon";
+
 export const navigationCustomizations: Components<Theme> = {
   MuiMenuItem: {
     styleOverrides: {
@@ -58,9 +65,7 @@ export const navigationCustomizations: Components<Theme> = {
   },
   MuiSelect: {
     defaultProps: {
-      IconComponent: React.forwardRef<SVGSVGElement, SvgIconProps>((props, ref) => (
-        <UnfoldMoreRoundedIcon fontSize="small" {...props} ref={ref} />
-      )),
+      IconComponent: UnfoldMoreIcon,
     },
     styleOverrides: {
       root: ({ theme }) => ({
@@ -81,7 +86,6 @@ export const navigationCustomizations: Components<Theme> = {
         '&:before, &:after': {
           display: 'none',
         },
-
         ...theme.applyStyles('dark', {
           borderRadius: (theme.vars || theme).shape.borderRadius,
           borderColor: gray[700],
@@ -232,35 +236,18 @@ export const navigationCustomizations: Components<Theme> = {
         width: 12,
         height: 12,
         borderRadius: '50%',
-        '& text': {
-          display: 'none',
-        },
-        '&.Mui-active': {
-          border: 'none',
-          color: (theme.vars || theme).palette.primary.main,
-        },
-        '&.Mui-completed': {
-          border: 'none',
-          color: (theme.vars || theme).palette.success.main,
-        },
+        '& text': { display: 'none' },
+        '&.Mui-active': { border: 'none', color: (theme.vars || theme).palette.primary.main },
+        '&.Mui-completed': { border: 'none', color: (theme.vars || theme).palette.success.main },
         ...theme.applyStyles('dark', {
           border: `1px solid ${gray[700]}`,
-          '&.Mui-active': {
-            border: 'none',
-            color: (theme.vars || theme).palette.primary.light,
-          },
-          '&.Mui-completed': {
-            border: 'none',
-            color: (theme.vars || theme).palette.success.light,
-          },
+          '&.Mui-active': { border: 'none', color: (theme.vars || theme).palette.primary.light },
+          '&.Mui-completed': { border: 'none', color: (theme.vars || theme).palette.success.light },
         }),
         variants: [
           {
             props: { completed: true },
-            style: {
-              width: 12,
-              height: 12,
-            },
+            style: { width: 12, height: 12 },
           },
         ],
       }),
