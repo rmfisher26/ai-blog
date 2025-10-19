@@ -6,8 +6,8 @@ import { SessionProvider } from 'next-auth/react'
 import { Analytics } from "@vercel/analytics/react";
 import * as React from 'react';
 import Container from '@mui/material/Container';
-import Navbar from '@/components/NavBar';
 import ThemeRegistry from '@/components/ThemeRegistry';
+import AppNavBar from "@/components/AppNavBar";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -30,8 +30,12 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       > <ThemeRegistry>
-          <Navbar />
-          <Container maxWidth="md" sx={{ mt: 4 }}>
+          <AppNavBar/>
+          <Container
+            maxWidth="lg"
+            component="main"
+            sx={{ display: 'flex', flexDirection: 'column', my: 16, gap: 4 }}
+          >
             <SessionProvider>{children}</SessionProvider>
             <Analytics />
           </Container>
