@@ -13,6 +13,8 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseRoundedIcon from '@mui/icons-material/CloseRounded';
 import ColorModeIconDropdown from '../theme/ColorModelIconDropdown';
 import SitemarkIcon from './SiteMarkIcon';
+import ThemeToggleButton from './ThemeToggleButton';
+
 const StyledToolbar = styled(Toolbar)(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
@@ -88,7 +90,9 @@ export default function AppNavBar() {
             <ColorModeIconDropdown />
           </Box>
           <Box sx={{ display: { xs: 'flex', md: 'none' }, gap: 1 }}>
-            <ColorModeIconDropdown size="medium" />
+            {/*<ColorModeIconDropdown size="medium" />*/}
+              <ThemeToggleButton />
+            
             <IconButton aria-label="Menu button" onClick={toggleDrawer(true)}>
               <MenuIcon />
             </IconButton>
