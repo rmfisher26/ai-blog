@@ -40,12 +40,20 @@ export default async function PostPage({ params }: PostPageProps) {
       <p className="text-gray-300 text-sm">
         {new Date(post.createdAt).toLocaleDateString()}
       </p>
-      <Image
-        src={post.coverImageUrl || "/images/placeholder.png"}
-        width={512}
-        height={512}
-        alt={post.coverImageAlt || ""}
-      />
+      <figure className="my-6">
+        <Image
+          src={post.coverImageUrl || "/images/placeholder.png"}
+          alt={post.coverImageAlt || ""}
+          width={1200}
+          height={675}
+          className="rounded-lg w-full h-auto object-cover"
+        />
+        {post.coverImageAlt && (
+          <figcaption className="text-center text-sm text-gray-700 mt-2">
+            {post.coverImageAlt}
+          </figcaption>
+        )}
+      </figure>
       <ReactMarkdown>{post.content}</ReactMarkdown>
     </article>
   );
