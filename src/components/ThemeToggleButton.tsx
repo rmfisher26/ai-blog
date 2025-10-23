@@ -22,7 +22,7 @@ export default function ThemeToggleButton() {
       }}
       aria-label="toggle theme"
     >
-      {mode === 'dark' ? <LightModeIcon /> : <DarkModeIcon />}
+      {mode === 'dark' ? <LightModeIcon sx={{color:"white"}}/> : <DarkModeIcon sx={{color:"black"}} />}
     </IconButton>
   );
 }

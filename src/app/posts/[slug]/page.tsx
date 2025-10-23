@@ -35,7 +35,7 @@ export default async function PostPage({ params }: PostPageProps) {
   if (!post) return <div>Post not found</div>;
 
   return (
-    <article className="prose dark:prose-invert mx-auto p-6">
+    <article className="prose mx-auto p-6">
       <h1>{post.title}</h1>
       <p className="text-gray-300 text-sm">
         {new Date(post.createdAt).toLocaleDateString()}
