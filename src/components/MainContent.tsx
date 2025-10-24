@@ -20,79 +20,8 @@ import RssFeedRoundedIcon from '@mui/icons-material/RssFeedRounded';
 import { useEffect, useState } from "react";
 import type { Post } from "@prisma/client";
 import Link from 'next/link';
+import { formatCustomDate } from '@/lib/utilities';
 
-
-/*
-const mainFeaturedPost = {
-  img: posts[0]?.coverImageUrl || '/images/placeholder.png',
-  tag: posts[0]?.tags || '',
-  title: posts[0]?.title || '',
-  slug: posts[0]?.slug || '',
-  description:
-    posts[0]?.content.slice(0, 150) ||
-    'Explore AI-generated posts built with Next.js, Prisma, and Material UI.',
-  authors: [
-    { name: posts[0]?.author, avatar: '/static/images/avatar/1.jpg' },
-  ],
-};
-*/
-
-const cardData = [
-  {
-    img: 'https://picsum.photos/800/450?random=1',
-    tag: 'Engineering',
-    title: 'Revolutionizing software development with cutting-edge tools',
-    description:
-      'Our latest engineering tools are designed to streamline workflows and boost productivity. Discover how these innovations are transforming the software development landscape.',
-    authors: [
-      { name: 'Remy Sharp', avatar: '/static/images/avatar/1.jpg' },
-      { name: 'Travis Howard', avatar: '/static/images/avatar/2.jpg' },
-    ],
-  },
-  {
-    img: 'https://picsum.photos/800/450?random=2',
-    tag: 'Product',
-    title: 'Innovative product features that drive success',
-    description:
-      'Explore the key features of our latest product release that are helping businesses achieve their goals. From user-friendly interfaces to robust functionality, learn why our product stands out.',
-    authors: [{ name: 'Erica Johns', avatar: '/static/images/avatar/6.jpg' }],
-  },
-  {
-    img: 'https://picsum.photos/800/450?random=3',
-    tag: 'Design',
-    title: 'Designing for the future: trends and insights',
-    description:
-      'Stay ahead of the curve with the latest design trends and insights. Our design team shares their expertise on creating intuitive and visually stunning user experiences.',
-    authors: [{ name: 'Kate Morrison', avatar: '/static/images/avatar/7.jpg' }],
-  },
-  {
-    img: 'https://picsum.photos/800/450?random=4',
-    tag: 'Company',
-    title: "Our company's journey: milestones and achievements",
-    description:
-      "Take a look at our company's journey and the milestones we've achieved along the way. From humble beginnings to industry leader, discover our story of growth and success.",
-    authors: [{ name: 'Cindy Baker', avatar: '/static/images/avatar/3.jpg' }],
-  },
-  {
-    img: 'https://picsum.photos/800/450?random=45',
-    tag: 'Engineering',
-    title: 'Pioneering sustainable engineering solutions',
-    description:
-      "Learn about our commitment to sustainability and the innovative engineering solutions we're implementing to create a greener future. Discover the impact of our eco-friendly initiatives.",
-    authors: [
-      { name: 'Agnes Walker', avatar: '/static/images/avatar/4.jpg' },
-      { name: 'Trevor Henderson', avatar: '/static/images/avatar/5.jpg' },
-    ],
-  },
-  {
-    img: 'https://picsum.photos/800/450?random=6',
-    tag: 'Product',
-    title: 'Maximizing efficiency with our latest product updates',
-    description:
-      'Our recent product updates are designed to help you maximize efficiency and achieve more. Get a detailed overview of the new features and improvements that can elevate your workflow.',
-    authors: [{ name: 'Travis Howard', avatar: '/static/images/avatar/2.jpg' }],
-  },
-];
 
 const StyledCard = styled(Card)(({ theme }) => ({
   display: 'flex',
@@ -130,7 +59,15 @@ const StyledTypography = styled(Typography)({
   textOverflow: 'ellipsis',
 });
 
-function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
+
+type AuthorType = {
+  name: string;
+  avatar: string;
+  date: Date;
+};
+
+export function Author({ authors }: { authors: AuthorType[] }) {
+
   return (
     <Box
       sx={{
@@ -149,8 +86,8 @@ function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
           {authors.map((author, index) => (
             <Avatar
               key={index}
-              alt={author.name}
-              src={author.avatar}
+              alt={author.name || 'AI'}
+              src={author.avatar || '/images/logo.png'}
               sx={{ width: 24, height: 24 }}
             />
           ))}
@@ -159,7 +96,9 @@ function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
           {authors.map((author) => author.name).join(', ')}
         </Typography>
       </Box>
-      <Typography variant="caption">July 14, 2021</Typography>
+      <Typography variant="caption">
+        {authors.map((author) => author.date).join(', ')}
+      </Typography>
     </Box>
   );
 }
@@ -193,18 +132,6 @@ export default function MainContent() {
   );
 
   const [postCardData, setPostCardData] = useState<Post[]>([]);
-
-  /*
-  useEffect(() => {
-    fetch("/api/posts")
-      .then((res) => res.json())
-      .then((data: Post[]) => {
-        //console.log("Fetched data:", data);
-        setPostCardData(data);
-      })
-      .catch((err) => console.error("Failed to fetch posts:", err));
-  }, []);
-*/
 
   //use localStorage to keep data from refreshing (basic approach)
   //could be improved with Next.JS ISR?
@@ -365,10 +292,10 @@ export default function MainContent() {
                   {postCardData[0]?.title || 'Loading Title...'}
                 </Typography>
                 <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                  {postCardData[0]?.content.slice(0, 150) || 'Loading Content...'}
+                  {postCardData[0]?.content || 'Loading Content...'}
                 </StyledTypography>
               </StyledCardContent>
-              <Author authors={cardData[0].authors} />
+              <Author authors={[{ name: postCardData[0]?.author || '...', avatar: '/images/avatar.png', date: postCardData[0]?.createdAt || ""}]} />
             </StyledCard>
           </Link>
         </Grid>
@@ -402,10 +329,10 @@ export default function MainContent() {
                   {postCardData[1]?.title || 'Loading Title...'}
                 </Typography>
                 <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                  {postCardData[1]?.content.slice(0, 150) || 'Loading Content...'}
+                  {postCardData[1]?.content || 'Loading Content...'}
                 </StyledTypography>
               </StyledCardContent>
-              <Author authors={cardData[1].authors} />
+              <Author authors={[{ name: postCardData[1]?.author || '...', avatar: '/images/avatar.png', date: (postCardData[1]?.createdAt) || '...'}]} />
             </StyledCard>
           </Link>
         </Grid>
@@ -442,10 +369,10 @@ export default function MainContent() {
                   {postCardData[2]?.title || 'Loading Title...'}
                 </Typography>
                 <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                  {postCardData[2]?.content.slice(0, 150) || 'Loading Content...'}
+                  {postCardData[2]?.content || 'Loading Content...'}
                 </StyledTypography>
               </StyledCardContent>
-              <Author authors={cardData[2].authors} />
+              <Author authors={[{ name: postCardData[2]?.author || '...', avatar: '/images/avatar.png', date: (postCardData[2]?.createdAt) || '...'}]} />
             </StyledCard>
           </Link>
         </Grid>
@@ -484,11 +411,11 @@ export default function MainContent() {
                       color="text.secondary"
                       gutterBottom
                     >
-                      {postCardData[3]?.content.slice(0, 150) || 'Loading Content...'}
+                      {postCardData[3]?.content || 'Loading Content...'}
                     </StyledTypography>
                   </div>
                 </StyledCardContent>
-                <Author authors={cardData[3].authors} />
+              <Author authors={[{ name: postCardData[3]?.author || '...', avatar: '/images/avatar.png', date: (postCardData[3]?.createdAt) || '...'}]} />
               </StyledCard>
             </Link>
             <Link href={`/posts/${postCardData[4]?.slug}`} style={{ textDecoration: "none" }}>
@@ -520,11 +447,11 @@ export default function MainContent() {
                       color="text.secondary"
                       gutterBottom
                     >
-                      {postCardData[4]?.content.slice(0, 150) || 'Loading Content...'}
+                      {postCardData[4]?.content || 'Loading Content...'}
                     </StyledTypography>
                   </div>
                 </StyledCardContent>
-                <Author authors={cardData[4].authors} />
+              <Author authors={[{ name: postCardData[4]?.author || '...', avatar: '/images/avatar.png', date: (postCardData[4]?.createdAt) || '...'}]} />
               </StyledCard>
             </Link>
           </Box>
@@ -562,10 +489,10 @@ export default function MainContent() {
                   {postCardData[5]?.title || 'Loading Title...'}
                 </Typography>
                 <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                  {postCardData[5]?.content.slice(0, 150) || 'Loading Content...'}
+                  {postCardData[5]?.content || 'Loading Content...'}
                 </StyledTypography>
               </StyledCardContent>
-              <Author authors={cardData[5].authors} />
+              <Author authors={[{ name: postCardData[5]?.author || '...', avatar: '/images/avatar.png', date: (postCardData[5]?.createdAt) || '...'}]} />
             </StyledCard>
           </Link>
         </Grid>

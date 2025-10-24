@@ -57,7 +57,13 @@ const TitleTypography = styled(Typography)(({ theme }) => ({
   },
 }));
 
-function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
+type AuthorType = {
+  name: string;
+  avatar: string;
+  date: Date;
+};
+
+export function Author({ authors }: { authors: AuthorType[] }) {
   return (
     <Box
       sx={{
@@ -85,7 +91,9 @@ function Author({ authors }: { authors: { name: string; avatar: string }[] }) {
           {authors.map((author) => author.name).join(', ')}
         </Typography>
       </Box>
-      <Typography variant="caption">July 14, 2021</Typography>
+      <Typography variant="caption">
+        {authors.map((author) => author.date).join(', ')}
+      </Typography>
     </Box>
   );
 }
@@ -161,10 +169,9 @@ export default function LatestContent() {
                   />
                 </TitleTypography>
                 <StyledTypography variant="body2" color="text.secondary" gutterBottom>
-                  {article.content.slice(0, 50) || 'Loading Content...'}
+                  {article.content || 'Loading Content...'}
                 </StyledTypography>
-
-                {/*<Author authors={article.authors} />*/}
+              <Author authors={[{ name: article.author || '...', avatar: '/images/avatar.png', date: article.createdAt || ""}]} />
               </Box>
             </Link>
           </Grid>
